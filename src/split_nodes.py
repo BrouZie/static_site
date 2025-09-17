@@ -1,5 +1,13 @@
-from extract_md import extract_markdown_links, extract_markdown_images
+import re
 from textnode import TextNode, TextType
+
+
+def extract_markdown_images(text):
+    return re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+
+
+def extract_markdown_links(text):
+    return re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
 
 
 def split_nodes_delimiter(old_nodes: list, delimiter: str, text_type) -> list:
@@ -42,8 +50,8 @@ def split_nodes_image(old_nodes: list):
             new_nodes.append(TextNode(alt, TextType.IMAGE, url))
             text = after
 
-        if after:
-                new_nodes.append(TextNode(after, TextType.TEXT))
+        if text:
+            new_nodes.append(TextNode(after, TextType.TEXT))
 
     return new_nodes
 
@@ -60,7 +68,7 @@ def split_nodes_link(old_nodes):
         if not matches:
             new_nodes.append(node)
             continue
-        
+
         for alt, url in matches:
             before, sep, after = text.partition(f"[{alt}]({url})")
             if before:
