@@ -2,6 +2,7 @@ import unittest
 
 from split_nodes import split_nodes_delimiter, split_nodes_link, split_nodes_image
 from textnode import TextNode, TextType
+from text_to_nodes import text_to_textnodes
 
 
 class TestNodeSplit(unittest.TestCase):
@@ -74,17 +75,39 @@ class TestNodeSplit(unittest.TestCase):
         )
 
     def test_split_link(self):
-        node = TextNode("This is a LINK [link](https://bitches.com) - Meet the sweetest bitches!", TextType.TEXT)
+        node = TextNode(
+            "This is a LINK [link](https://bitches.com) - Meet the sweetest bitches!",
+            TextType.TEXT,
+        )
         new_nodes = split_nodes_link([node])
         self.assertListEqual(
             [
-                    TextNode("This is a LINK ", TextType.TEXT),
-                    TextNode("link", TextType.LINK, "https://bitches.com"),
-                    TextNode(" - Meet the sweetest bitches!", TextType.TEXT)
+                TextNode("This is a LINK ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://bitches.com"),
+                TextNode(" - Meet the sweetest bitches!", TextType.TEXT),
             ],
             new_nodes,
         )
 
+    def test_text_to_textnodes(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        self.assertListEqual(
+            text_to_textnodes(text),
+            [
+                TextNode("This is ", TextType.TEXT, None),
+                TextNode("text", TextType.BOLD, None),
+                TextNode(" with an ", TextType.TEXT, None),
+                TextNode("italic", TextType.ITALIC, None),
+                TextNode(" word and a ", TextType.TEXT, None),
+                TextNode("code block", TextType.CODE, None),
+                TextNode(" and an ", TextType.TEXT, None),
+                TextNode(
+                    "obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"
+                ),
+                TextNode(" and a ", TextType.TEXT, None),
+                TextNode("link", TextType.LINK, "https://boot.dev"),
+            ],
+        )
 
 
 if __name__ == "__main__":
