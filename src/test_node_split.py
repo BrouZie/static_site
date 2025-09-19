@@ -3,6 +3,7 @@ import unittest
 from split_nodes import split_nodes_delimiter, split_nodes_link, split_nodes_image
 from textnode import TextNode, TextType
 from text_to_nodes import text_to_textnodes
+from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
 
 
 class TestNodeSplit(unittest.TestCase):
@@ -109,6 +110,60 @@ class TestNodeSplit(unittest.TestCase):
             ],
         )
 
+        """
+        Tests for markdown block splitting
+        """
+
+    def test_markdown_to_blocks(self):
+        md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(
+            blocks,
+            [
+                "This is **bolded** paragraph",
+                "This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+                "- This is a list\n- with items",
+            ],
+        )
+
+    def test_markdown_block_types(self):
+        md = """
+# This is a heading
+
+This is a paragraph of text. It has some **bold** and _italic_ words inside of it.
+
+- This is the first list item in a list block
+- This is a list item
+- This is another list item
+
+1. This is first ordered in list
+2. This is second ordered in list
+3. This is third ordered in list
+
+```
+# this is a code block
+print("Hello suckers")
+```
+
+> some insightful quote
+>> this is also a quote
+>>> should still be a quote
+"""
+        blocks = markdown_to_blocks(md)
+        self.assertEqual(block_to_block_type(blocks[0]), BlockType.HEADING)
+        self.assertEqual(block_to_block_type(blocks[1]), BlockType.PARAGRAPH)
+        self.assertEqual(block_to_block_type(blocks[2]), BlockType.UNORDERED_LIST)
+        self.assertEqual(block_to_block_type(blocks[3]), BlockType.ORDERED_LIST)
+        self.assertEqual(block_to_block_type(blocks[4]), BlockType.CODE)
+        self.assertEqual(block_to_block_type(blocks[5]), BlockType.QUOTE)
 
 if __name__ == "__main__":
     unittest.main()
