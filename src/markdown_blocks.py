@@ -40,6 +40,5 @@ def block_to_block_type(block: str):
 def markdown_to_blocks(markdown: str) -> list[str]:
     # Normalize Windows newlines
     md = markdown.replace("\r\n", "\n").replace("\r", "\n")
-    print(md)
     # Split on blank lines, trim each block, and drop empties
     return [block.strip() for block in md.split("\n\n") if block.strip()]
