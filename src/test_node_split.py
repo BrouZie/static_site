@@ -4,6 +4,7 @@ from split_nodes import split_nodes_delimiter, split_nodes_link, split_nodes_ima
 from textnode import TextNode, TextType
 from inline import text_to_textnodes
 from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
+from block_to_html import markdown_to_html_node
 
 
 class TestNodeSplit(unittest.TestCase):
@@ -164,6 +165,39 @@ print("Hello suckers")
         self.assertEqual(block_to_block_type(blocks[3]), BlockType.ORDERED_LIST)
         self.assertEqual(block_to_block_type(blocks[4]), BlockType.CODE)
         self.assertEqual(block_to_block_type(blocks[5]), BlockType.QUOTE)
+
+    def test_paragraphs(self):
+        md = """
+    This is **bolded** paragraph
+    text in a p
+    tag here
+
+    This is another paragraph with _italic_ text and `code` here
+
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><p>This is <b>bolded</b> paragraph text in a p tag here</p><p>This is another paragraph with <i>italic</i> text and <code>code</code> here</p></div>",
+        )
+
+    def test_codeblock(self):
+        md = """
+    ```
+    This is text that _should_ remain
+    the **same** even with inline stuff
+    ```
+    """
+
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
