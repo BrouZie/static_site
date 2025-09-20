@@ -2,7 +2,7 @@ import unittest
 
 from split_nodes import split_nodes_delimiter, split_nodes_link, split_nodes_image
 from textnode import TextNode, TextType
-from text_to_nodes import text_to_textnodes
+from inline import text_to_textnodes
 from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
 
 
