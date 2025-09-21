@@ -1,40 +1,68 @@
-# import shutil
-# import os
-#
-# def copy_from_static():
-#     os.mkdir("dick")
-#     
-    # shutil.rmtree()
-
-# def main():
-#     print(dest_dir)
-#     print(os.listdir("static"))
-#
-# if __name__ == "__main__":
-#     main()
-
-import os, sys
+import os
+import shutil
 from pathlib import Path
 
-print("Python:", sys.version)
-print("Platform os.name:", os.name)         # 'posix' on Linux
-print("Current user id:", os.geteuid() if hasattr(os, "geteuid") else "n/a")
 
-# 1) Where am I?
-print("CWD:", os.getcwd())
+def copy_tree_recursive(src: Path, dst: Path) -> None:
+    """
+    Recursively copy all files and subdirectories from src into dst.
+    Assumes dst already exists as a directory.
+    """
+    # Base case: nothing to copy
+    if not src.exists():
+        return
 
-# 2) Make a directory you definitely can write to
-test_dir = Path("/tmp/os_test_dir")         # /tmp is writable on Linux
-try:
-    os.mkdir(test_dir)                      # will fail if it already exists
-    print("Created:", test_dir)
-except FileExistsError:
-    print("Already exists:", test_dir)
-except PermissionError as e:
-    print("PermissionError:", e)
-except OSError as e:
-    print("OSError:", e)
+    for entry in src.iterdir():
+        target = dst / entry.name
+        if entry.is_file():
+            # ensure parent exists (paranoia for deeply nested paths)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(entry, target)
+            print(f"Copied file: {entry} -> {target}")
+        elif entry.is_dir():
+            target.mkdir(parents=True, exist_ok=True)
+            print(f"Entering directory: {entry}")
+            copy_tree_recursive(entry, target)
+        else:
+            # Optional: handle symlinks or special files; skipping is fine for this assignment.
+            print(f"Skipping non-regular file: {entry}")
 
-# 3) Prefer this if parents may not exist or you want 'exist_ok'
-Path("/tmp/nested/a/b").mkdir(parents=True, exist_ok=True)
-print("Ensured:", "/tmp/nested/a/b")
+
+def main() -> None:
+    cwd = Path(os.getcwd())
+    static_dir = cwd / "static"
+    public_dir = cwd / "public"
+
+    # Safety checks
+    if not static_dir.exists():
+        raise FileNotFoundError(f"Source directory does not exist: {static_dir}")
+
+    # Ensure we’re not deleting the source by mistake
+    try:
+        static_dir.relative_to(public_dir)
+        raise RuntimeError("Refusing to run: 'static' is inside 'public'.")
+    except ValueError:
+        pass  # OK: static is not inside public
+
+    try:
+        public_dir.relative_to(static_dir)
+        raise RuntimeError("Refusing to run: 'public' is inside 'static'.")
+    except ValueError:
+        pass  # OK: public is not inside static
+
+    # 1) Delete destination (if present) so copy is clean
+    if public_dir.exists():
+        print(f"Removing existing directory: {public_dir}")
+        shutil.rmtree(public_dir)
+
+    # 2) Recreate destination root
+    public_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Created destination root: {public_dir}")
+
+    # 3) Recursively copy content
+    copy_tree_recursive(static_dir, public_dir)
+    print("Done.")
+
+
+if __name__ == "__main__":
+    main()
