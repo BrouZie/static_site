@@ -4,7 +4,7 @@ from split_nodes import split_nodes_delimiter, split_nodes_link, split_nodes_ima
 from textnode import TextNode, TextType
 from inline import text_to_textnodes
 from markdown_blocks import markdown_to_blocks, block_to_block_type, BlockType
-from block_to_html import markdown_to_html_node
+from block_to_html import markdown_to_html_node, extract_title
 
 
 class TestNodeSplit(unittest.TestCase):
@@ -197,6 +197,17 @@ print("Hello suckers")
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_extract_codeblock(self):
+        md1="""
+# Header after newline
+and some more text that isn't
+a title
+"""
+        md2="# Header is here"
+        self.assertEqual(extract_title(md1), "Header after newline")
+        self.assertEqual(extract_title(md2), "Header is here")
+
 
 
 if __name__ == "__main__":
