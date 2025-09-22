@@ -2,14 +2,27 @@ import os
 import shutil
 from pathlib import Path
 
+from block_to_html import markdown_to_html_node, extract_title
 
-def generate_page(from_path, template_path=None, dest_path=None):
+
+def generate_page(
+    from_path="content/index.md", template_path="template.html", dest_path="public/index.html"
+):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
-    with open(from_path, "rt", encoding="utf8") as f:
-        file = f.read()
-        print(file)
 
-generate_page(from_path=f"{os.getcwd()}/testing.txt")
+    with open(from_path, "rt", encoding="utf8") as f:
+        md_file = f.read()
+    with open(template_path, "rt", encoding="utf8") as f:
+        template = f.read()
+
+    html_string = markdown_to_html_node(md_file).to_html()
+    # print(html_string)
+    full_doc = template.replace("{{ Title }}", extract_title(md_file)).replace("{{ Content }}", html_string)
+    print(full_doc)
+
+    with open(dest_path, "w") as f:
+        f.write(full_doc)
+
 
 def copy_tree_recursive(src: Path, dst: Path) -> None:
     """
@@ -71,6 +84,8 @@ def main() -> None:
     copy_tree_recursive(static_dir, public_dir)
     print("Done.")
 
+    # 4) Generate html page
+    generate_page()
 
 if __name__ == "__main__":
     main()
