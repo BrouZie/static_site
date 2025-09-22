@@ -3,6 +3,14 @@ import shutil
 from pathlib import Path
 
 
+def generate_page(from_path, template_path=None, dest_path=None):
+    print(f"Generating page from {from_path} to {dest_path} using {template_path}")
+    with open(from_path, "rt", encoding="utf8") as f:
+        file = f.read()
+        print(file)
+
+generate_page(from_path=f"{os.getcwd()}/testing.txt")
+
 def copy_tree_recursive(src: Path, dst: Path) -> None:
     """
     Recursively copy all files and subdirectories from src into dst.
