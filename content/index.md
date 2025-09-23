@@ -1,46 +1,30 @@
-# Tolkien Fan Club
+# Utveksling til University of Sydney
 
-![JRR Tolkien sitting](/images/tolkien.png)
+![University of Sydney](/Bilder/sydney.jpg)
 
-Here's the deal, **I like Tolkien**.
+Neste semester skal jeg til **Sydney**
 
-> "I am in fact a Hobbit in all but size."
+> "Du går glipp av alt du ikke blir med på sa en klok mann en gang!"
 >
-> -- J.R.R. Tolkien
+> -- Klok Mann
 
-## Blog posts
+## Viktige kontakter/nettsider
 
-- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
-- [Why Tom Bombadil Was a Mistake](/blog/tom)
-- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
+- [Sjekk ut emner her](https://www.sydney.edu.au/courses/search.html?search-type=course&page=1#f-courses_search_type=Courses)
 
-## Reasons I like Tolkien
+## Skjekkliste
 
-- You can spend years studying the legendarium and still not understand its depths
-- It can be enjoyed by children and adults alike
-- Disney _didn't ruin it_ (okay, but Amazon might have)
-- It created an entirely new genre of fantasy
+1. Skaffe pass
+2. Godkjenning av engelsk
+3. Godkjenning av fag [Forhåndsgodkjennelse av fag](https://www.nmbu.no/studenter/skjema-og-maler-student)
+4. Karakterutskrift
+5. Søke om studentvisa
+6. Søke bolig
+7. Si opp bolig
 
-## My favorite characters (in order)
+## Viktige bemerkelser
 
-1. Gandalf
-2. Bilbo
-3. Sam
-4. Glorfindel
-5. Galadriel
-6. Elrond
-7. Thorin
-8. Sauron
-9. Aragorn
-
-Here's what `elflang` looks like (the perfect coding language):
-
-```
-func main(){
-    fmt.Println("Aiya, Ambar!")
-}
-```
-
-Want to get in touch? [Contact me here](/contact).
-
-This site was generated with a custom-built [static site generator](https://www.boot.dev/courses/build-static-site-generator-python) from the course on [Boot.dev](https://www.boot.dev).
+- Søknadsfrist: **31. oktober**
+- Alt av forsikringer ordnes selv
+- Søke om **forhåndsgodkjennelse** før **lån**
+- **Husk:** betal semesteravgift ++
