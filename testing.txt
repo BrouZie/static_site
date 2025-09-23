@@ -1,3 +1,0 @@
-# dette er header
-Hei fra en annen fil
-heisann

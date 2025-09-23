@@ -16,35 +16,6 @@ def _text_to_children(text: str):
 
     return children
 
-md = """
-# This is a heading 
-
-This is a paragraph of text. It has some **bold** and _italic_ words inside of it.
-
-- This is the first list item in a list block
-- This is a list item
-- This is another list item
-# hello
-1. This is first ordered in list
-2. This is second ordered in list
-3. This is third ordered in list
-
-```
-# this is a code block
-print("Hello suckers")
-```
-
-> some insightful quote
->> this is also a quote
->>> should still be a quote
-"""
-
-def extract_title(markdown: str) -> str:
-    if (m := re.search(r"(?m)^# (.+)$", markdown)) is None:
-        raise Exception("No header (h1) in file")
-    else:
-        return m.group(1).strip()
-
 def markdown_to_html_node(markdown):
     blocks = markdown_to_blocks(markdown)
     block_nodes = []

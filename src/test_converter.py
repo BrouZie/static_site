@@ -2,7 +2,7 @@ import unittest
 
 from converter import text_node_to_html_node
 from textnode import TextNode, TextType
-from split_nodes import extract_markdown_images, extract_markdown_links
+from split_nodes import extract_markdown_images
 
 
 class TestConverter(unittest.TestCase):
